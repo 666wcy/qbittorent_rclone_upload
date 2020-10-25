@@ -62,6 +62,6 @@ auto_del_flag="test"	#上传完成后将种子改变的分类名
 设置 **Torrent 完成时运行外部程序**
 
 ```shell
-bash /config/qb_auto.sh  "%N" "%F" "%R" "%D" "%C" "%Z" "%I"
+bash /upload/qb_auto.sh  "%N" "%F" "%R" "%D" "%C" "%Z" "%I"
 ```
 
