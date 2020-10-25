@@ -37,7 +37,7 @@ docker中的-v映射地址可以自行修改
 
 ## 自动上传文件配置
 
-编辑upload文件夹下的qb_auto.sh文件
+编辑upload文件夹下的qb_auto.sh文件![]()
 
 ```
 the_dir="${save_dir//\/downloads\//}"	#如果你修改了主下载地址，请修改这里
@@ -64,4 +64,16 @@ auto_del_flag="test"	#上传完成后将种子改变的分类名
 ```shell
 bash /upload/qb_auto.sh  "%N" "%F" "%R" "%D" "%C" "%Z" "%I"
 ```
+
+
+
+
+
+## 效果展示
+
+![qb配置](https://github.com/666wcy/qbittorent_rclone_upload/raw/main/qb.png)
+
+![上传日志](https://github.com/666wcy/qbittorent_rclone_upload/raw/main/log.png)
+
+![上传内容](https://github.com/666wcy/qbittorent_rclone_upload/raw/main/upload.png)
 
