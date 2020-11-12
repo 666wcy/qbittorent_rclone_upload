@@ -6,22 +6,27 @@ save_dir=$4
 files_num=$5
 torrent_size=$6
 file_hash=$7
-#将下列命令添加至qb的下载完成后运行
-#bash /upload/qb_auto.sh  "%N" "%F" "%R" "%D" "%C" "%Z" "%I"
+
 DRIVE_NAME='onedrive'   # 挂载盘名称
 DRIVE_PATH='/upload'		#上传到盘的地址，后面没有 /
 DOWNLOAD_PATH='/downloads/'		#qb下载默认地址
 
 RETRY_NUM=3		#rclone上传重试次数
 
-qb_version="4.3.0.1"  #qb版本
+qb_version="4.2.5"  #qb版本
 qb_username=""        #qb用户名
 qb_password=""        #qb密码
 qb_web_url="http://localhost:8080"   #qb web地址
 leeching_mode="false"  #true为自动删除上传的种子
 log_dir="/config/log"  #日志保存地址
-auto_del_flag="test"   #上传完成后将种子标记的标签
+auto_del_flag="rclone"   #上传完成后将种子标记的标签
 
+tg_if="true"  #上传完成用Tg bot 进行通知，如果不开启下面两项不需要填,true为开启
+chat_id="" #用户id，通过 @userinfobot 获取
+bot_api="" #自己申请的bot的API
+
+#bash /upload/qb_auto.sh  "%N" "%F" "%R" "%D" "%C" "%Z" "%I"
+echo "bash /upload/qb_auto.sh  ${torrent_name} ${content_dir} ${root_dir} ${save_dir} ${files_num} ${torrent_size} ${file_hash}" >> ${log_dir}/qb.log
 
 if [ ! -d ${log_dir} ]
 then
@@ -40,17 +45,21 @@ INFO="[${LIGHT_GREEN_FONT_PREFIX}INFO]"
 ERROR="[${RED_FONT_PREFIX}ERROR]"
 WARRING="[${YELLOW_FONT_PREFIX}WARRING]"
 
-
+DATE_TIME() {
+    date +"%m/%d %H:%M:%S"
+}
 
 
 
 function UPLOAD_FILE() {
     echo -e "$(DATE_TIME) ${INFO} Start upload files..."
+    echo -e "$(DATE_TIME) ${INFO} Start upload files..." >> ${log_dir}/qb.log
     RETRY=0
     while [ ${RETRY} -le ${RETRY_NUM} ]; do
         [ ${RETRY} != 0 ] && (
             echo
             echo -e "$(DATE_TIME) ${ERROR} Upload failed! Retry ${RETRY}/${RETRY_NUM} ..."
+            echo -e "$(DATE_TIME) ${ERROR} Upload failed! Retry ${RETRY}/${RETRY_NUM} ..."  >> ${log_dir}/qb.log
             echo
         )
         echo ${UPLOAD_PATH}
@@ -63,7 +72,8 @@ function UPLOAD_FILE() {
         else
             RETRY=$((${RETRY} + 1))
             [ ${RETRY} -gt ${RETRY_NUM} ] && (
-                echo "$(DATE_TIME) ${ERROR} Upload failed: ${UPLOAD_PATH}"
+                echo "$(DATE_TIME) ${ERROR} Upload failed: ${UPLOAD_PATH}" 
+                echo "$(DATE_TIME) ${ERROR} Upload failed: ${UPLOAD_PATH}"  >> ${log_dir}/qb.log
                
             )
             sleep 3
@@ -195,6 +205,8 @@ echo "HASH:${file_hash}" >> ${log_dir}/qb.log
 echo "上传地址:${REMOTE_PATH}" >> ${log_dir}/qb.log
 #echo "Cookie:${cookie}" >> ${log_dir}/qb.log
 echo -e "-------------------------------------------------------------\n" >> ${log_dir}/qb.log
-
-
-
+if [ ${tg_if} == "true" ]
+then
+#Tg_url= "https://api.telegram.org/bot${bot_api}/sendMessage?chat_id=${chat_id}&text=种子名称：${torrent_name}%0a内容路径：${content_dir}%0a根目录：${root_dir}%0a保存路径：${save_dir}%0a文件数：${files_num}%0a文件大小：${torrent_size}Bytes%0aHASH:${file_hash}%0a上传地址:${REMOTE_PATH}"
+curl -g -i -X GET "https://api.telegram.org/bot${bot_api}/sendMessage?chat_id=${chat_id}&text=种子名称：${torrent_name}%0a内容路径：${content_dir}%0a根目录：${root_dir}%0a保存路径：${save_dir}%0a文件数：${files_num}%0a文件大小：${torrent_size}Bytes%0aHASH:${file_hash}%0a上传地址:${REMOTE_PATH}"
+fi
