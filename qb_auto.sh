@@ -192,7 +192,7 @@ echo "保存路径：${save_dir}" >> ${log_dir}/qb.log
 echo "文件数：${files_num}" >> ${log_dir}/qb.log
 echo "文件大小：${torrent_size}Bytes" >> ${log_dir}/qb.log
 echo "HASH:${file_hash}" >> ${log_dir}/qb.log
-echo "上传地址:${UPLOAD_PATH}" >> ${log_dir}/qb.log
+echo "上传地址:${REMOTE_PATH}" >> ${log_dir}/qb.log
 #echo "Cookie:${cookie}" >> ${log_dir}/qb.log
 echo -e "-------------------------------------------------------------\n" >> ${log_dir}/qb.log
 
