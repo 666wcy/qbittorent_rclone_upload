@@ -12,7 +12,7 @@ loc大佬牛逼!!
 
 运行docker
 
-```shell
+```
 docker run  --name qbittorrent -d \
 -p 6881:6881 \
 -p 6881:6881/udp \
@@ -22,10 +22,25 @@ docker run  --name qbittorrent -d \
 -v /root/qbittorrent/upload:/upload \
 --restart=always \
 /benchao/qbittorrent-rclone:v1.4
-
 ```
 
 docker中的-v映射地址可以自行修改
+
+
+
+qBittorrent v4.2.5
+
+```
+docker run  --name qbittorrent -d \
+-p 6881:6881 \
+-p 6881:6881/udp \
+-p 8080:8080 \
+-v /root/qbittorrent/config:/config \
+-v /root/qbittorrent/downloads:/downloads \
+-v /root/qbittorrent/upload:/upload \
+--restart=always \
+/benchao/qbittorrent-rclone:v1.3
+```
 
 
 
