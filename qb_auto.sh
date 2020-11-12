@@ -6,7 +6,8 @@ save_dir=$4
 files_num=$5
 torrent_size=$6
 file_hash=$7
-
+#将下列命令添加至qb的下载完成后运行
+#bash /upload/qb_auto.sh  "%N" "%F" "%R" "%D" "%C" "%Z" "%I"
 DRIVE_NAME='onedrive'   # 挂载盘名称
 DRIVE_PATH='/upload'		#上传到盘的地址，后面没有 /
 DOWNLOAD_PATH='/downloads/'		#qb下载默认地址
